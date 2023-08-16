@@ -308,15 +308,15 @@ class StringTest {
         System.out.println("result : " + result);
     }
     private String 가장짧은문자거리_solution1(String s, char t) {
-        int[] intArr = new int[s.length()];
+        int[] answer = new int[s.length()];
         int p = 1000;
         for (int i = 0; i < s.length(); i++) {
             if (s.charAt(i) == t) {
                 p = 0;
-                intArr[i] = p;
+                answer[i] = p;
             } else {
                 p++;
-                intArr[i] = p;
+                answer[i] = p;
             }
         }
         p = 1000;
@@ -325,12 +325,87 @@ class StringTest {
                 p = 0;
             } else {
                 p++;
-                intArr[i] = Math.min(intArr[i], p);
+                answer[i] = Math.min(answer[i], p);
             }
         }
 
-        return Arrays.stream(intArr)
+        return Arrays.stream(answer)
                 .mapToObj(i -> String.valueOf(i))
                 .collect(Collectors.joining(" "));
+    }
+
+    @Test
+    @DisplayName("문자열압축")
+    void 문자열압축() {
+        String result = 문자열압축_solution2("KSTTTSEEKFKKKDJJGG");
+        System.out.println("result : " + result);
+    }
+    private String 문자열압축_solution1(String str) {
+        StringBuilder sb = new StringBuilder();
+        int p = 1;
+        for (int i = 0; i < str.length(); i++) {
+            if (i + 1 < str.length()) {
+                if (str.charAt(i) == str.charAt(i + 1)) {
+                    p++;
+                } else {
+                    sb.append(str.charAt(i));
+                    if (p != 1) {
+                        sb.append(p);
+                        p = 1;
+                    }
+                }
+            } else {
+                sb.append(str.charAt(i));
+                sb.append(p);
+            }
+        }
+
+        return sb.toString();
+    }
+    private String 문자열압축_solution2(String str) {
+        StringBuilder sb = new StringBuilder();
+        str = str+" ";
+        int p = 1;
+        for (int i = 0; i < str.length()-1; i++) {
+            if (str.charAt(i) == str.charAt(i + 1)) {
+                p++;
+            } else {
+                sb.append(str.charAt(i));
+                if (p != 1) {
+                    sb.append(p);
+                    p = 1;
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    @Test
+    @DisplayName("암호")
+    void 암호() {
+
+        String result = 암호_solution2(4, "#****###**#####**#####**##**");
+        System.out.println("result : " + result);
+    }
+    private String 암호_solution1(int n, String str) {
+        StringBuilder sb = new StringBuilder();
+        str = str.replace('#','1').replace('*','0')+" ";
+        for (int i=0; i<str.length()+1 ; i++) {
+            if (i != 0 && i%7 == 0) {
+                sb.append((char) Integer.parseInt(str.substring(i - 7, i), 2));
+            }
+        }
+        return sb.toString();
+    }
+
+    private String 암호_solution2(int n, String str) {
+        StringBuilder sb = new StringBuilder();
+        for (int i=0; i<n; i++) {
+            String tmp = str.substring(0, 7).replace('#','1').replace('*','0');
+            int num = Integer.parseInt(tmp, 2);
+            sb.append((char)num);
+            str = str.substring(7);
+        }
+        return sb.toString();
     }
 }
