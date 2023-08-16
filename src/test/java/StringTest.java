@@ -262,4 +262,75 @@ class StringTest {
 
         return str.equalsIgnoreCase(reverseStr) ? "YES" : "NO";
     }
+
+    @Test
+    @DisplayName("팰린드롬(replaceAll 정규식 이용)") // 팰린드롬 : 숫자, 단어, 문장 또는 다른 문자열 단위에서도 적용될 수 있는 개념으로, 앞으로 읽으나 뒤로 읽으나 동일한 순서로 읽히는 것
+                                                  // ex.  "madam"이나 "A man, a plan, a canal, Panama!" 같은 문장
+    void 팰린드롬() {
+        String result = 팰린드롬_solution1("found7, time: study; Yduts; emit, 7Dnuof");
+        System.out.println("result : " + result);
+    }
+    private String 팰린드롬_solution1(String str) {
+        str = str.toLowerCase().replaceAll("[^a-z]","");
+        String reverseStr = new StringBuilder(str).reverse().toString();
+
+        return str.equalsIgnoreCase(reverseStr) ? "YES" : "NO";
+    }
+
+    @Test
+    @DisplayName("숫자만추출")
+    void 숫자만추출() {
+        int result = 숫자만추출_solution3("g0en2T0s8eSoft");
+        System.out.println("result : " + result);
+    }
+    private int 숫자만추출_solution1(String str) {
+        return Integer.parseInt(str.replaceAll("[^0-9]",""));
+    }
+    private int 숫자만추출_solution2(String str) {
+        int answer = 0;
+        for (char c : str.toCharArray()) {
+            if (c >= 48 && c<=57) answer = answer * 10 + (c-48); // 아스키코드 48 -> 0, 57-> 9
+        }
+        return answer;
+    }
+    private int 숫자만추출_solution3(String str) {
+        String answer = "";
+        for (char c : str.toCharArray()) {
+            if (Character.isDigit(c)) answer += c;
+        }
+        return Integer.parseInt(answer);
+    }
+
+    @Test
+    @DisplayName("가장짧은문자거리")
+    void 가장짧은문자거리() {
+        String result = 가장짧은문자거리_solution1("teachermode", 'e'); // teachermode
+        System.out.println("result : " + result);
+    }
+    private String 가장짧은문자거리_solution1(String s, char t) {
+        int[] intArr = new int[s.length()];
+        int p = 1000;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == t) {
+                p = 0;
+                intArr[i] = p;
+            } else {
+                p++;
+                intArr[i] = p;
+            }
+        }
+        p = 1000;
+        for (int i = s.length()-1; i >= 0; i--) {
+            if (s.charAt(i) == t) {
+                p = 0;
+            } else {
+                p++;
+                intArr[i] = Math.min(intArr[i], p);
+            }
+        }
+
+        return Arrays.stream(intArr)
+                .mapToObj(i -> String.valueOf(i))
+                .collect(Collectors.joining(" "));
+    }
 }
