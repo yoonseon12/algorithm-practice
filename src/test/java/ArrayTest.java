@@ -254,4 +254,53 @@ public class ArrayTest {
         answer = Math.max(answer, sum2);
         return answer;
     }
+
+    @Test
+    @DisplayName("봉우리")
+    void 봉우리() {
+        int[][] arr = {{5, 3, 7, 2, 3}
+                      ,{3, 7, 1, 6, 1}
+                      ,{7, 2, 5, 3, 4}
+                      ,{4, 3, 6, 4, 1}
+                      ,{8, 7, 3, 5, 2}};
+        int answer = 봉우리_solution2(5, arr);
+        System.out.println("answer : "+answer);
+    }
+    private int 봉우리_solution1(int n, int[][] arr) {
+        int answer = 0;
+        int[][] customArr = new int[n+2][n+2];
+        for (int i=1; i<customArr.length-1; i++) {
+            for (int j=1; j<customArr.length-1; j++) {
+                customArr[i][j] = arr[i-1][j-1];
+            }
+        }
+        for (int i=1; i<customArr.length-1; i++) {
+            for (int j=1; j<customArr.length-1; j++) {
+                if (customArr[i][j] > Math.max(Math.max(customArr[i][j-1], customArr[i][j+1]), Math.max(customArr[i-1][j], customArr[i+1][j]))) answer++;
+            }
+        }
+        return answer;
+    }
+    private int 봉우리_solution2(int n, int[][] arr) {
+        int answer = 0;
+        // 상 하 좌 우 를 보기 위한 배열을 미리 만들어둔다.
+        int[] dx = {-1, 0, 1, 0};
+        int[] dy = {0, 1, 0, -1};
+
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<n; j++) {
+                boolean flag = true;
+                for (int k=0; k<4; k++) {
+                    int nx = i+dx[k];
+                    int ny = j+dy[k];
+                    if (nx>=0 && nx<n && ny>=0 && ny<n && arr[nx][ny] >= arr[i][j]) { // nx>=0 && nx<n && ny>=0 && ny<n : 없는 인덱스(테두리0이라고 가정한 인덱스)를 조회하지 않도록
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) answer++;
+            }
+        }
+        return answer;
+    }
 }
