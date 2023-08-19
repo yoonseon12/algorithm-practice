@@ -303,4 +303,65 @@ public class ArrayTest {
         }
         return answer;
     }
+
+    @Test
+    @DisplayName("임시반장정하기")
+    void 임시반장정하기() {
+        int[][] arr = {{2, 3, 1, 7, 3}
+                      ,{4, 1, 9, 6, 8}
+                      ,{5, 5, 2, 4, 4}
+                      ,{6, 5, 2, 6, 7}
+                      ,{8, 4, 2, 2, 2}};
+        int answer = 임시반장정하기_solution1(5, arr);
+        System.out.println("answer : "+answer);
+    }
+    private int 임시반장정하기_solution1(int n, int[][] arr) {
+        int answer = 0, max = Integer.MIN_VALUE;
+        for (int i=0; i<n; i++) { // i : 학년
+            int cnt = 0;
+            for (int j=0; j<n; j++) { // j : 번
+                for (int k=0; k<5; k++) { // k : 반
+                    if (arr[i][k] == arr[j][k]) {
+                        cnt++; // i반 학생과 같은 반을 한 j번 학생이 몇명인지
+                        break; // 중요
+                    }
+                }
+            }
+            if (cnt > max) {
+                max = cnt;
+                answer = i+1;
+            }
+        }
+        return answer;
+    }
+
+    @Test
+    @DisplayName("멘토링")
+    void 멘토링() {
+        int[][] arr = {{3, 4, 1, 2}
+                      ,{4, 3, 2, 1}
+                      ,{3, 1, 4, 2}};
+        int answer = 멘토링_solution1(4,3, arr);
+        System.out.println("answer : "+answer);
+    }
+    private int 멘토링_solution1(int n, int m, int[][] arr) {// n : 학생 수 , m : 수학테스트 수
+        int answer = 0;
+        for (int i=1; i<=n; i++) { // i 학생
+            for (int j=1; j<=n; j++) { // j 학생
+                int cnt = 0;
+                for (int k=0; k<m; k++) { // 수학테스트 k
+                    int pi = 0, pj =0; // k번째 테스트에서 학생 i, j의 등수
+                    for (int s=0; s<n; s++) { // 등수
+                           if (arr[k][s] == i) pi = s;
+                           if (arr[k][s] == j) pj = s;
+                    }
+                    if(pi>pj) cnt++;
+                }
+                if(cnt==m) answer++;
+            }
+        }
+        return answer;
+    }
+
+
 }
