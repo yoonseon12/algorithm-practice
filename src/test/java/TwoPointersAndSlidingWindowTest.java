@@ -85,7 +85,69 @@ public class TwoPointersAndSlidingWindowTest {
         }
         return answer;
     }
-    
+
+    @Test
+    @DisplayName("연속부분수열(복합적문제)")
+    void 연속부분수열() {
+        int[] arr = {1, 2, 1, 3, 1, 1, 1, 2};
+        int answer = 연속부분수열_solution1(8, 6, arr);
+        System.out.println("answer : " + answer);
+    }
+
+    private int 연속부분수열_solution1(int n, int m, int[] arr) {
+        int answer = 0, sum = 0, lt = 0;
+
+        for (int rt=0; rt<n; rt++) { // 증가하고
+            sum+=arr[rt]; // sum부터 rt까지 합이 m인지 확인
+            if (sum == m) answer++;
+            while (sum >= m) {
+                sum -= arr[lt++]; //빼고나서 lt가 증가한다음
+                if (sum == m) answer++; // lt부터 rt까지의 합이 m인지 확인
+            }
+        }
+        return answer;
+    }
+
+    @Test
+    @DisplayName("연속된자연수의합(two pointers)")
+    void 연속된자연수의합_twoPointers_twoPointers() {
+        int answer = 연속된자연수의합_twoPointers_solution1(15);
+        System.out.println("answer : " + answer);
+    }
+    private int 연속된자연수의합_twoPointers_solution1(int n) {
+        int answer=0, lt=0, sum=0;
+        int[] arr = new int[n/2+1];
+        for (int i=0; i<arr.length; i++) {
+            arr[i]=i+1;
+        }
+        for (int rt=0; rt<arr.length; rt++){
+            sum += arr[rt];
+            if (sum==n) answer++;
+            while (sum>=n) {
+                sum -= arr[lt++];
+                if (sum==n) answer++;
+            }
+        }
+        return answer;
+    }
+
+    @Test
+    @DisplayName("연속된자연수의합(수학)")
+    void 연속된자연수의합_수학_twoPointers() {
+        int answer = 연속된자연수의합_수학_solution1(15);
+        System.out.println("answer : " + answer);
+    }
+    private int 연속된자연수의합_수학_solution1(int n) {
+        int answer=0, cnt=1; // cnt는 연속된 자연수의 개수
+        n--;
+        while (n>0) {
+            cnt++;
+            n=n-cnt; // n에서 1, 2를 뺏다고 가정
+            if (n%cnt==0) answer++;
+        }
+        return answer;
+    }
+
     @Test
     @DisplayName("예시입력 ,찍기")
     void 예시입력() {
