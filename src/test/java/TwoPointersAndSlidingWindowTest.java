@@ -149,9 +149,30 @@ public class TwoPointersAndSlidingWindowTest {
     }
 
     @Test
+    @DisplayName("최대 길이 연속부분수열(복합적 문제)")
+    void 최대길이연속부분수열() {
+        int[] arr = {1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1};
+        int answer = 최대길이연속부분수열_solution(14, 2, arr);
+        System.out.println("answer : " + answer);
+    }
+    private int 최대길이연속부분수열_solution(int n, int k, int[] arr) {
+        int answer=0, lt=0;
+        int cnt=0; // 0을 1로 변경한 횟수
+        for (int rt=0; rt<n; rt++) {
+            if (arr[rt] == 0) cnt++; // 0을 만나면 1로 바꾸었다고 가정하고 변경한 횟수를 cnt에 누적한다.
+            while (cnt > k) { // 0을 1로 바꾼 횟수가 초과할 경우
+                if (arr[lt] == 0) cnt--;// lt가 0을 1로 변경한 부분을 만나면 다시 0으로 바꾼다고 가정하고 cnt--
+                lt++; // cnt--를 해주고 바로 lt를 증가시킨다. 따라서 arr[lt]는 한칸 씩 이동하게 된다.
+            }
+            answer = Math.max(answer, rt-lt+1); // 1로 이루어진 총 길이 저장
+        }
+        return answer;
+    }
+
+    @Test
     @DisplayName("예시입력 ,찍기")
     void 예시입력() {
-        String s = "1 2 1 3 1 1 1 2";
+        String s = "1 1 0 0 1 1 0 1 1 0 1 1 0 1";
         System.out.println(s.replaceAll(" ",", "));
     }
 
