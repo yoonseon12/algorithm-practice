@@ -1,8 +1,7 @@
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
@@ -96,9 +95,63 @@ public class HashMapAndTreeSetTest {
     }
 
     @Test
+    @DisplayName("모든아나그램찾기")
+    void 모든아나그램찾기() {
+        System.out.println(모든아나그램찾기_solution1("bacaAacba", "abc"));
+    }
+    private int 모든아나그램찾기_solution1(String s, String t) {
+        int answer=0;
+        HashMap<Character, Integer> sm = new HashMap<>();
+        HashMap<Character, Integer> tm = new HashMap<>();
+        // 비교할 문자열 담은 map
+        for(char x : t.toCharArray()) {
+            tm.put(x, tm.getOrDefault(x,0)+1);
+        }
+        // 초기 슬라이딩 윈도우를 설정
+        for (int i=0; i<t.length()-1; i++) {
+            sm.put(s.charAt(i), sm.getOrDefault(s.charAt(i),0)+1);
+        }
+        int lt=0;
+        for (int rt=t.length()-1; rt<s.length(); rt++) {
+            sm.put(s.charAt(rt), sm.getOrDefault(s.charAt(rt),0)+1);
+            if (sm.equals(tm)) answer++; // sm 간의 equals는 key, value가 모두 같아야 true 반환
+            sm.put(s.charAt(lt), sm.get(s.charAt(lt)-1));
+            if (sm.get(s.charAt(lt))==0) sm.remove(s.charAt(lt));
+            lt++;
+        }
+        return answer;
+    }
+
+    @Test
+    @DisplayName("K번째 큰 수")
+    void K번째큰수() {
+        int[] arr = {13, 15, 34, 23, 45, 65, 33, 11, 26, 42};
+        System.out.println(K번째큰수_solution1(10, 3 , arr));
+    }
+    private int K번째큰수_solution1(int n, int k, int[] arr) {
+        int answer=-1;
+        TreeSet<Integer> treeSet = new TreeSet<>(Collections.reverseOrder());
+        for (int i=0; i<n; i++) {
+            for (int j=i+1; j<n ; j++) {
+                for (int l=j+1; l<n; l++) {
+                    treeSet.add(arr[i]+arr[j]+arr[l]);
+                }
+            }
+        }
+        treeSet.remove(143);
+        int cnt = 1;
+        for (int x : treeSet) {
+            System.out.println(x);
+            if(cnt == k) answer = x;
+            cnt++;
+        }
+        return answer;
+    }
+
+    @Test
     @DisplayName("예시입력 ,찍기")
     void 예시입력() {
-        String s = "20 12 20 10 23 17 10";
+        String s = "13 15 34 23 45 65 33 11 26 42";
         System.out.println(s.replaceAll(" ",", "));
     }
 }
