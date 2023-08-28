@@ -1,9 +1,7 @@
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class StackAndQueueTest {
     @Test
@@ -210,11 +208,53 @@ public class StackAndQueueTest {
         return answer;
     }
 
+    @Test
+    @DisplayName("응급실")
+    void 응급실() {
+        int[] arr = {60, 50, 70, 80, 90};
+        System.out.println(응급실_solution(5, 2, arr));
+    }
+    private int 응급실_solution(int n, int m, int[] arr) {
+        int answer = 0;
+        Queue<Person> queue = new LinkedList<>();
+        for (int i=0; i<n; i++) {
+            queue.offer(new Person(i, arr[i]));
+        }
+        while(!queue.isEmpty()) {
+            Person temp = queue.poll();
+            for (Person p : queue) {
+                if(p.priority > temp.priority) {
+                    queue.offer(temp);
+                    temp = null;
+                    break;
+                }
+            }
+            if (temp!=null) {
+                answer++;
+                if(temp.id == m) return answer;
+            }
+        }
+
+        for (int i=0; i<m; i++) {
+            queue.offer(queue.poll());
+        }
+
+
+        return answer;
+    }
+    public class Person {
+        private int id;
+        private int priority;
+        public Person(int id, int priority) {
+            this.id = id;
+            this.priority = priority;
+        }
+    }
 
     @Test
     @DisplayName("예시입력 ,찍기")
     void 예시입력() {
-        String s = "1 5 3 5 1 2 1 4";
+        String s = "60 60 90 60 60 60";
         System.out.println(s.replaceAll(" ",", "));
     }
 }
