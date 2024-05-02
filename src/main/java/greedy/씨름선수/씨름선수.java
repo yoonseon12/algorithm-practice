@@ -1,4 +1,4 @@
-package greedy;
+package greedy.씨름선수;
 
 import java.io.BufferedReader;
 import java.io.IOException;
