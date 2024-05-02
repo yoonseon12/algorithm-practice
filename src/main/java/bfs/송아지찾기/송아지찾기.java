@@ -1,4 +1,4 @@
-package bfs;
+package bfs.송아지찾기;
 
 import java.util.LinkedList;
 import java.util.Queue;
