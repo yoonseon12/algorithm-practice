@@ -1,4 +1,4 @@
-package dfs;
+package dfs.동전교환;
 
 import java.io.BufferedReader;
 import java.io.IOException;
